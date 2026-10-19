@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111111">
+  <meta name="theme-color" content="#123b70">
   <link rel="manifest" href="manifest.json">
   <title>Barbería | Control</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -77,7 +77,8 @@
           <div><label>Gana la barbería</label><input id="cutShopEarn" readonly></div>
           <div><label>Método de pago</label><select id="cutPayment"><option value="yape">Yape</option><option value="efectivo">Efectivo</option><option value="plin">Plin</option><option value="tarjeta">Tarjeta</option></select></div>
           <div class="full"><label>Comprobante (opcional para pagos digitales)</label><input id="cutReceipt" type="file" accept="image/*" capture="environment"></div>
-          <div class="full payment-box"><div><strong>Yape</strong><span id="yapeNumber">Configura tu número</span></div><div id="yapeQr" class="qr-placeholder">QR</div></div>
+          <div class="full payment-box"><div><strong>Yape</strong><span id="yapeNumber">Configura tu número</span><span id="yapeName"></span></div><div id="yapeQr" class="qr-placeholder">QR</div></div>
+          <div class="full nps-box"><div><strong>¿Cómo fue tu experiencia?</strong><span>Escanea para responder la encuesta de satisfacción del 1 al 10.</span></div><div id="npsQr" class="qr-placeholder">QR NPS</div></div>
           <div class="full"><button class="primary" type="submit">REGISTRAR CORTE</button></div>
         </form></div>
       </section>
@@ -92,7 +93,7 @@
 
       <section id="page-liquidaciones" class="page hidden"><div class="panel"><div class="toolbar"><div><h3>Liquidaciones</h3><p>Calcula lo que corresponde pagar a cada barbero.</p></div><input id="liquidDate" type="date"></div><div id="liquidations"></div></div></section>
 
-      <section id="page-ajustes" class="page hidden"><div class="panel settings"><h3>Configuración de barbería</h3><form id="settingsForm"><label>Nombre de barbería<input id="settingName" required></label><label>Número de Yape<input id="settingYape" placeholder="999 999 999"></label><label>Nombre del titular<input id="settingYapeName"></label><label>QR de Yape<input id="settingQr" type="file" accept="image/*"></label><div id="currentQr"></div><button class="primary">Guardar configuración</button></form></div></section>
+      <section id="page-ajustes" class="page hidden"><div class="panel settings"><h3>Configuración de barbería</h3><form id="settingsForm"><label>Nombre de barbería<input id="settingName" required></label><label>Número de Yape<input id="settingYape" placeholder="999 999 999"></label><label>Nombre del titular<input id="settingYapeName"></label><label>QR de Yape<input id="settingQr" type="file" accept="image/*"></label><div id="currentQr"></div><label>QR de encuesta NPS (satisfacción del 1 al 10)<input id="settingNpsQr" type="file" accept="image/*"></label><div id="currentNpsQr"></div><button class="primary">Guardar configuración</button></form></div></section>
     </main>
   </div>
   <script src="supabaseClient.js"></script>

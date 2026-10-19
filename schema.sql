@@ -27,6 +27,7 @@ create table if not exists public.barberia_config (
   yape_number text,
   yape_name text,
   qr_path text,
+  nps_qr_path text,
   updated_at timestamptz not null default now()
 );
 
@@ -120,7 +121,7 @@ insert into storage.buckets (id,name,public) values ('barberia-comprobantes','ba
 
 drop policy if exists "barberia storage read" on storage.objects;
 drop policy if exists "barberia storage insert" on storage.objects;
-create policy "barberia storage read" on storage.objects for select to authenticated using (bucket_id='barberia-comprobantes' and (owner_id=auth.uid()::text or public.barberia_my_role()='admin'));
+create policy "barberia storage read" on storage.objects for select to authenticated using (bucket_id='barberia-comprobantes' and (owner_id=auth.uid()::text or public.barberia_my_role()='admin' or name like 'config/%'));
 create policy "barberia storage insert" on storage.objects for insert to authenticated with check (bucket_id='barberia-comprobantes');
 
 -- IMPORTANTE: después de crear tu cuenta de administrador en Supabase Auth,
