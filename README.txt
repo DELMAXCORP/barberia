@@ -15,7 +15,8 @@ where id = 'UUID_DE_LA_PERSONA';
 
 Haz administrador únicamente a quienes deban ver los ingresos y modificar el negocio. En la app, Servicios permite agregar, editar precios y desactivar/activar servicios.
 7. Configura Yape y QR desde Configuración.
-8. Sube todos los archivos a GitHub Pages, Netlify o Vercel.
+8. Para configurar pagos diarios/semanales y habilitar el registro de liquidaciones, ejecuta actualizar_liquidaciones.sql en el SQL Editor de Supabase.
+9. Sube todos los archivos a GitHub Pages, Netlify o Vercel.
 
 IMPORTANTE
 - Esta app usa únicamente tablas con prefijo barberia_.
