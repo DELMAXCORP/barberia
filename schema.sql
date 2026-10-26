@@ -7,7 +7,7 @@ create table if not exists public.barberia_usuarios (
   id uuid primary key references auth.users(id) on delete cascade,
   name text not null,
   email text,
-  role text not null default 'barbero' check (role in ('admin','barbero')),
+  role text not null default 'barbero' check (role in ('admin','barbero','recepcionista')),
   commission_percent numeric(5,2) not null default 50 check (commission_percent >= 0 and commission_percent <= 100),
   active boolean not null default true,
   created_at timestamptz not null default now()
@@ -79,8 +79,8 @@ create policy "barberia servicios admin update" on public.barberia_servicios for
 create policy "barberia config read" on public.barberia_config for select to authenticated using (true);
 create policy "barberia config admin write" on public.barberia_config for all to authenticated using (public.barberia_my_role()='admin') with check (public.barberia_my_role()='admin');
 
-create policy "barberia cortes read" on public.barberia_cortes for select to authenticated using (barber_id=auth.uid() or public.barberia_my_role()='admin');
-create policy "barberia cortes insert" on public.barberia_cortes for insert to authenticated with check (public.barberia_my_role()='admin' or (barber_id=auth.uid() and public.barberia_my_role()='barbero'));
+create policy "barberia cortes read" on public.barberia_cortes for select to authenticated using (barber_id=auth.uid() or public.barberia_my_role() in ('admin','recepcionista'));
+create policy "barberia cortes insert" on public.barberia_cortes for insert to authenticated with check (public.barberia_my_role() in ('admin','recepcionista'));
 
 -- El servidor calcula montos y comisión desde los datos vigentes, para que un
 -- navegador no pueda alterar precios o registrar cortes en nombre de otro.
@@ -121,7 +121,7 @@ insert into storage.buckets (id,name,public) values ('barberia-comprobantes','ba
 
 drop policy if exists "barberia storage read" on storage.objects;
 drop policy if exists "barberia storage insert" on storage.objects;
-create policy "barberia storage read" on storage.objects for select to authenticated using (bucket_id='barberia-comprobantes' and (owner_id=auth.uid()::text or public.barberia_my_role()='admin' or name like 'config/%'));
+create policy "barberia storage read" on storage.objects for select to authenticated using (bucket_id='barberia-comprobantes' and (owner_id=auth.uid()::text or public.barberia_my_role() in ('admin','recepcionista') or name like 'config/%'));
 create policy "barberia storage insert" on storage.objects for insert to authenticated with check (bucket_id='barberia-comprobantes');
 
 -- IMPORTANTE: después de crear tu cuenta de administrador en Supabase Auth,
