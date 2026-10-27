@@ -40,6 +40,7 @@ create table if not exists public.barberia_cortes (
   barber_amount numeric(10,2) not null,
   shop_amount numeric(10,2) not null,
   payment_method text not null default 'yape' check (payment_method in ('yape','efectivo','plin','tarjeta')),
+  observations text,
   receipt_path text,
   created_at timestamptz not null default now()
 );
