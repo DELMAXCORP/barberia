@@ -12,7 +12,7 @@
 </head>
 <body>
   <div id="toast" class="toast"></div>
-  <dialog id="qrDialog" class="qr-dialog" aria-label="Código QR ampliado">
+    <dialog id="qrDialog" class="qr-dialog" aria-label="Imagen ampliada">
     <button id="closeQr" class="qr-close" type="button" aria-label="Cerrar QR">×</button>
     <img id="largeQr" alt="Código QR de Yape ampliado">
     <p>Escanea este código con tu celular</p>
@@ -78,7 +78,7 @@
           <div><label>Gana la barbería</label><input id="cutShopEarn" readonly></div>
           <div><label>Método de pago</label><select id="cutPayment"><option value="yape">Yape</option><option value="efectivo">Efectivo</option><option value="plin">Plin</option><option value="tarjeta">Tarjeta</option></select></div>
           <div class="full"><label>Observaciones (opcional)</label><textarea id="cutObservations" rows="2" maxlength="500" placeholder="Ej. S/ 10 en efectivo y S/ 15 por Yape"></textarea></div>
-          <div class="full"><label>Comprobante (opcional para pagos digitales)</label><input id="cutReceipt" type="file" accept="image/*" capture="environment"></div>
+          <div class="full"><label>Comprobante de pago (opcional)</label><div class="receipt-upload-actions"><label class="receipt-option">📷 Tomar foto<input id="cutReceiptCamera" type="file" accept="image/*" capture="environment"></label><label class="receipt-option">🖼 Elegir de galería<input id="cutReceiptGallery" type="file" accept="image/*"></label><span id="receiptSelectedName" class="muted"></span></div></div>
           <div class="full payment-box"><div><strong>Yape</strong><span id="yapeNumber">Configura tu número</span><span id="yapeName"></span></div><div id="yapeQr" class="qr-placeholder">QR</div></div>
           <div class="full nps-box"><div><strong>¿Cómo fue tu experiencia?</strong><span>Escanea para responder la encuesta de satisfacción del 1 al 10.</span></div><div id="npsQr" class="qr-placeholder">QR NPS</div></div>
           <div class="full"><button class="primary" type="submit">REGISTRAR CORTE</button></div>
