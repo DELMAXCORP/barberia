@@ -3,8 +3,8 @@ APP BARBERÍA - V1
 1. Ejecuta schema.sql en el SQL Editor del mismo proyecto Supabase.
 2. En supabaseClient.js configura la URL y el ANON KEY del proyecto. Actualmente son del mismo proyecto Supabase que usa la perfumería.
 3. Crea un usuario en Authentication > Users.
-4. Copia el UUID de cada persona autorizada a administrar el negocio y crea su perfil como admin con el SQL indicado al final de schema.sql. Solo las cuentas con `role='admin'` ven las ventas del negocio, las ganancias de la barbería, las liquidaciones y la configuración.
-5. Crea los usuarios de recepción en Authentication > Users y asígnales perfil con `role='recepcionista'` (ejemplo abajo). Recepción registra los servicios y selecciona al barbero que los realizó. Los barberos ya no pueden registrar servicios.
+4. Copia el UUID de cada persona autorizada a administrar el negocio y crea su perfil como admin con el SQL indicado al final de schema.sql. Solo las cuentas con `role='admin'` ven las ventas del negocio, las ganancias de la barbería y la configuración.
+5. Crea los usuarios de recepción en Authentication > Users y asígnales perfil con `role='recepcionista'` (ejemplo abajo). Recepción registra los servicios, selecciona al barbero que los realizó, gestiona liquidaciones y cambia la frecuencia de pago entre diaria y semanal. Los administradores pueden registrar servicios para un barbero o para sí mismos; los barberos ya no pueden registrar servicios.
 6. Para cada barbero: crea su usuario en Authentication > Users, copia el UUID y desde la sección Barberos de la app registra su nombre y comisión.
 7. Para cambiar un perfil existente entre administrador, recepcionista y barbero, usa el SQL Editor de Supabase con el UUID de la persona:
 
@@ -15,7 +15,7 @@ where id = 'UUID_DE_LA_PERSONA';
 ```
 
 Haz administrador únicamente a quienes deban ver los ingresos y modificar el negocio. En la app, Servicios permite agregar, editar precios y desactivar/activar servicios.
-8. Para actualizar una instalación existente, ejecuta actualizar_roles_recepcion.sql en Supabase. Asegúrate también de haber ejecutado actualizar_servicios_multiple.sql.
+8. Para actualizar una instalación existente, ejecuta actualizar_roles_recepcion.sql y actualizar_liquidaciones.sql en Supabase. Asegúrate también de haber ejecutado actualizar_servicios_multiple.sql.
 9. Configura Yape y QR desde Configuración.
 10. Para configurar pagos diarios/semanales y habilitar el registro de liquidaciones, ejecuta actualizar_liquidaciones.sql en el SQL Editor de Supabase.
 11. Sube todos los archivos a GitHub Pages, Netlify o Vercel.
