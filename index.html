@@ -41,7 +41,7 @@
         <button data-page="corte" class="nav-btn register-only"><span>＋</span><b>Registrar servicio</b></button>
         <button data-page="historial" class="nav-btn"><span>▤</span><b>Historial</b></button>
         <button data-page="barberos" class="nav-btn admin-only"><span>♙</span><b>Barberos</b></button>
-        <button data-page="servicios" class="nav-btn admin-only"><span>✂</span><b>Servicios</b></button>
+        <button data-page="servicios" class="nav-btn services-access"><span>✂</span><b>Servicios</b></button>
         <button data-page="liquidaciones" class="nav-btn payroll-access"><span>＄</span><b>Liquidaciones</b></button>
         <button data-page="ajustes" class="nav-btn admin-only"><span>⚙</span><b>Configuración</b></button>
       </nav>
@@ -86,7 +86,7 @@
       </section>
 
       <section id="page-historial" class="page hidden">
-        <div class="panel"><div class="toolbar"><div><h3>Historial de servicios</h3><p>Consulta y exporta las operaciones.</p></div><button id="exportBtn">Descargar Excel</button></div><div class="filters"><input id="filterDate" type="date"><select id="filterBarber"><option value="">Todos los barberos</option></select><select id="filterPayment"><option value="">Todos los pagos</option><option value="yape">Yape</option><option value="efectivo">Efectivo</option><option value="plin">Plin</option><option value="tarjeta">Tarjeta</option></select></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Atendió</th><th>Servicio</th><th>Precio</th><th>Gana el barbero</th><th>Gana la barbería</th><th>Pago</th><th>Observaciones</th><th>Comprobante</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+        <div class="panel"><div class="toolbar"><div><h3>Historial de servicios</h3><p>Consulta y exporta las operaciones.</p></div><button id="exportBtn">Descargar Excel</button></div><div class="filters"><input id="filterDate" type="date"><select id="filterBarber"><option value="">Todos los barberos</option></select><select id="filterPayment"><option value="">Todos los pagos</option><option value="yape">Yape</option><option value="efectivo">Efectivo</option><option value="plin">Plin</option><option value="tarjeta">Tarjeta</option></select></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Atendió</th><th>Servicios y precios</th><th>Total</th><th>Gana el barbero</th><th>Gana la barbería</th><th>Pago</th><th>Observaciones</th><th>Comprobante</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
       </section>
 
       <section id="page-barberos" class="page hidden"><div class="panel"><div class="toolbar"><div><h3>Barberos</h3><p>Los usuarios deben existir en Supabase Auth. Aquí administras sus datos y comisión.</p></div></div><form id="barberForm" class="inline-form"><input id="barberUserId" placeholder="UUID del usuario Auth" required><input id="barberName" placeholder="Nombre del barbero" required><input id="barberCommission" type="number" min="0" max="100" value="50" required><select id="barberPayFrequency"><option value="diario">Pago diario</option><option value="semanal">Pago semanal</option></select><button class="primary">Agregar / actualizar</button></form><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Comisión</th><th>Frecuencia</th><th>Estado</th></tr></thead><tbody id="barbersBody"></tbody></table></div></div></section>

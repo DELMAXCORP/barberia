@@ -31,3 +31,5 @@ IMPORTANTE
 - Barba y cejas entregan el 100% de su precio al barbero. Para registrar varios servicios, editar el total y asociar cada registro al barbero atendiente, ejecuta actualizar_servicios_multiple.sql y actualizar_roles_recepcion.sql en el SQL Editor de Supabase.
 - El campo Observaciones permite detallar pagos divididos, por ejemplo: S/ 10 en efectivo y S/ 15 por Yape. Para guardarlo en Supabase, actualiza ejecutando actualizar_roles_recepcion.sql.
 - Los comprobantes se almacenan en el bucket privado barberia-comprobantes.
+
+Para habilitar Servicios a recepcion (agregar, editar precios y activar/desactivar), ejecuta actualizar_servicios_recepcion.sql en el SQL Editor de Supabase.

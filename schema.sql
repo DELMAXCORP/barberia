@@ -74,8 +74,8 @@ create policy "barberia usuarios admin insert" on public.barberia_usuarios for i
 create policy "barberia usuarios admin update" on public.barberia_usuarios for update to authenticated using (public.barberia_my_role()='admin') with check (public.barberia_my_role()='admin');
 
 create policy "barberia servicios read" on public.barberia_servicios for select to authenticated using (true);
-create policy "barberia servicios admin insert" on public.barberia_servicios for insert to authenticated with check (public.barberia_my_role()='admin');
-create policy "barberia servicios admin update" on public.barberia_servicios for update to authenticated using (public.barberia_my_role()='admin') with check (public.barberia_my_role()='admin');
+create policy "barberia servicios admin insert" on public.barberia_servicios for insert to authenticated with check (public.barberia_my_role() in ('admin','recepcionista'));
+create policy "barberia servicios admin update" on public.barberia_servicios for update to authenticated using (public.barberia_my_role() in ('admin','recepcionista')) with check (public.barberia_my_role() in ('admin','recepcionista'));
 
 create policy "barberia config read" on public.barberia_config for select to authenticated using (true);
 create policy "barberia config admin write" on public.barberia_config for all to authenticated using (public.barberia_my_role()='admin') with check (public.barberia_my_role()='admin');
