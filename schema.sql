@@ -129,3 +129,22 @@ create policy "barberia storage insert" on storage.objects for insert to authent
 -- reemplaza UUID_AQUI por su UUID y ejecuta:
 -- insert into public.barberia_usuarios(id,name,email,role,commission_percent)
 -- values ('UUID_AQUI','Administrador','tu-correo@ejemplo.com','admin',50);
+
+alter table public.barberia_usuarios add column if not exists earnings_to_shop boolean not null default false;
+
+-- Esta regla se aplica despues del calculo habitual, incluidos barba y cejas.
+create or replace function public.barberia_asignar_ingreso_local() returns trigger
+language plpgsql set search_path=public as $$
+begin
+  if exists (select 1 from public.barberia_usuarios where id=new.barber_id and earnings_to_shop=true) then
+    new.commission_percent := 0;
+    new.barber_amount := 0;
+    new.shop_amount := new.price;
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists zzzz_barberia_ingreso_local on public.barberia_cortes;
+create trigger zzzz_barberia_ingreso_local
+before insert or update on public.barberia_cortes
+for each row execute function public.barberia_asignar_ingreso_local();

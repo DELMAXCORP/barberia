@@ -33,3 +33,5 @@ IMPORTANTE
 - Los comprobantes se almacenan en el bucket privado barberia-comprobantes.
 
 Para habilitar Servicios a recepcion (agregar, editar precios y activar/desactivar), ejecuta actualizar_servicios_recepcion.sql en el SQL Editor de Supabase.
+
+Para asignar a la barberia el 100% de los nuevos servicios de Diego (cuenta admin), ejecuta actualizar_ganancias_diego.sql. No cambia los importes historicos.
