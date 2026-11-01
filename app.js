@@ -40,6 +40,7 @@ async function init(){
   $('addCutService').addEventListener('click',addCutService); $('selectedServices').addEventListener('click',e=>{const button=e.target.closest('[data-remove-service]');if(button){selectedCutServices.splice(Number(button.dataset.removeService),1);renderSelectedServices(true)}}); $('cutPrice').addEventListener('input',updateEarnings);
   $('closeQr').addEventListener('click',()=>$('qrDialog').close()); $('qrDialog').addEventListener('click',e=>{if(e.target===$('qrDialog'))$('qrDialog').close()});
   $('historyBody').addEventListener('click',e=>{const button=e.target.closest('[data-receipt-url]');if(!button)return;$('largeQr').src=button.dataset.receiptUrl;$('largeQr').alt='Comprobante de pago ampliado';$('qrDialog').setAttribute('aria-label','Comprobante de pago ampliado');$('qrDialog').showModal()});
+  $('historyBody').addEventListener('click',undoCut);
   $('barberForm').addEventListener('submit',saveBarber); $('serviceForm').addEventListener('submit',saveService); $('serviceCancel').addEventListener('click',resetServiceForm); $('settingsForm').addEventListener('submit',saveSettings);
   $('exportBtn').addEventListener('click',exportExcel); ['filterDate','filterBarber','filterPayment'].forEach(id=>$(id).addEventListener('change',renderHistory)); $('filterDate').value=today(); $('liquidDate').value=today(); $('liquidDate').addEventListener('change',renderLiquidations); $('liquidations').addEventListener('click',registerPayout); $('liquidations').addEventListener('change',updatePayFrequency);
 }
@@ -100,7 +101,26 @@ function groupHistoryRows(rows){
   return [...groups.values()].map(group=>({...group,price:group.price/100,barber_amount:group.barber_amount/100,shop_amount:group.shop_amount/100}));
 }
 let historyRenderVersion=0;
-async function renderHistory(){const version=++historyRenderVersion;const date=$('filterDate').value,bid=isAdmin()?$('filterBarber').value:'',pay=$('filterPayment').value;let rows=(isAdmin()||profile?.role==='recepcionista')?cuts:cuts.filter(c=>c.barber_id===session?.user?.id);if(date)rows=rows.filter(c=>shopDate(c.created_at)===date);if(bid)rows=rows.filter(c=>c.barber_id===bid);if(pay)rows=rows.filter(c=>c.payment_method===pay);$('historyBody').innerHTML='';for(const c of groupHistoryRows(rows)){if(version!==historyRenderVersion)return;const tr=document.createElement('tr');tr.innerHTML=`<td>${shopDateTime(c.created_at)}</td><td>${esc(c.barber?.name)}</td><td>${c.items.map(item=>`<div class="history-service"><span>${esc(item.service?.name)}</span><strong>${money(item.price)}</strong></div>`).join('')}</td><td>${money(c.price)}</td><td>${money(c.barber_amount)}</td><td>${money(c.shop_amount)}</td><td><span class="pill">${esc(c.payment_method)}</span></td><td>${esc(c.observations||'')}</td><td class="receipt-cell">...</td>`;$('historyBody').appendChild(tr);tr.querySelector('.receipt-cell').innerHTML=await receiptLink(c.receipt_path)}}
+let undoCutPending=false;
+async function undoCut(e){
+  const button=e.target.closest('[data-undo-cut]');
+  if(!button||undoCutPending)return;
+  if(!canRegisterCuts()||!profile?.active)return toast('No tienes permiso para deshacer servicios');
+  const operation=groupHistoryRows(cuts).find(c=>c.items.some(item=>item.id===button.dataset.undoCut));
+  if(!operation)return toast('La operación ya no está disponible. Actualiza el historial.');
+  if(!confirm(`¿Deshacer esta operación de ${operation.barber?.name||'servicios'} por ${money(operation.price)}?\n\nSe eliminarán todos sus servicios (${operation.items.length}) y se descontarán de las ventas y comisiones. Después podrás registrarlos correctamente.`))return;
+  undoCutPending=true;button.disabled=true;
+  try{
+    const ids=operation.items.map(item=>item.id);
+    const {error}=await sb.rpc('barberia_deshacer_servicios',{p_ids:ids});
+    if(error)throw error;
+    cuts=cuts.filter(c=>!ids.includes(c.id));
+    renderDashboard();await renderHistory();await renderLiquidations();
+    toast('Operación deshecha. Puedes registrar los servicios corregidos.');
+  }catch(error){toast(error.message||'No se pudo deshacer la operación');}
+  finally{undoCutPending=false;button.disabled=false;document.querySelectorAll('[data-undo-cut]').forEach(b=>b.disabled=false);}
+}
+async function renderHistory(){const version=++historyRenderVersion;const date=$('filterDate').value,bid=isAdmin()?$('filterBarber').value:'',pay=$('filterPayment').value;let rows=(isAdmin()||profile?.role==='recepcionista')?cuts:cuts.filter(c=>c.barber_id===session?.user?.id);if(date)rows=rows.filter(c=>shopDate(c.created_at)===date);if(bid)rows=rows.filter(c=>c.barber_id===bid);if(pay)rows=rows.filter(c=>c.payment_method===pay);$('historyActions').classList.toggle('hidden',!canRegisterCuts());$('historyBody').innerHTML='';for(const c of groupHistoryRows(rows)){if(version!==historyRenderVersion)return;const tr=document.createElement('tr');tr.innerHTML=`<td>${shopDateTime(c.created_at)}</td><td>${esc(c.barber?.name)}</td><td>${c.items.map(item=>`<div class="history-service"><span>${esc(item.service?.name)}</span><strong>${money(item.price)}</strong></div>`).join('')}</td><td>${money(c.price)}</td><td>${money(c.barber_amount)}</td><td>${money(c.shop_amount)}</td><td><span class="pill">${esc(c.payment_method)}</span></td><td>${esc(c.observations||'')}</td><td class="receipt-cell">...</td>${canRegisterCuts()?`<td><button type="button" data-undo-cut="${esc(c.items[0].id)}" ${undoCutPending?'disabled':''}>Deshacer</button></td>`:''}`;$('historyBody').appendChild(tr);tr.querySelector('.receipt-cell').innerHTML=await receiptLink(c.receipt_path)}}
 function renderBarbers(){$('barbersBody').innerHTML=barbers.map(b=>`<tr><td>${esc(b.name)}</td><td>${esc(b.email||'-')}</td><td>${b.commission_percent}%</td><td>${b.pay_frequency==='semanal'?'Semanal':'Diario'}</td><td><span class="pill">Activo</span></td></tr>`).join('')}
 async function saveBarber(e){e.preventDefault();const {error}=await sb.from('barberia_usuarios').upsert({id:$('barberUserId').value.trim(),name:$('barberName').value.trim(),commission_percent:Number($('barberCommission').value),pay_frequency:$('barberPayFrequency').value,role:'barbero',email:null},{onConflict:'id'});if(error)toast(error.message);else{toast('Barbero guardado');e.target.reset();await loadBarbers();renderDashboard()}}
 function renderServices(){$('servicesBody').innerHTML=services.map(s=>`<tr><td>${esc(s.name)}</td><td>${money(s.price)}</td><td><span class="pill">${s.active?'Activo':'Inactivo'}</span></td><td><button onclick="editService('${s.id}')">Editar</button> <button onclick="toggleService('${s.id}',${s.active})">${s.active?'Desactivar':'Activar'}</button></td></tr>`).join('')}
