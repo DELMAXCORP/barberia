@@ -35,3 +35,5 @@ IMPORTANTE
 Para habilitar Servicios a recepcion (agregar, editar precios y activar/desactivar), ejecuta actualizar_servicios_recepcion.sql en el SQL Editor de Supabase.
 
 Para asignar a la barberia el 100% de los nuevos servicios de Diego (cuenta admin), ejecuta actualizar_ganancias_diego.sql. No cambia los importes historicos.
+
+En Historial, recepción y administración pueden pulsar Deshacer y confirmar para eliminar todos los servicios de una operación equivocada. Las ventas, comisiones y liquidaciones pendientes se actualizan; luego pueden registrar la operación corregida. No se permite deshacer servicios de períodos ya pagados. Para otras instalaciones, ejecutar actualizar_deshacer_servicios.sql después de actualizar_liquidaciones.sql.
