@@ -19,6 +19,7 @@ Haz administrador únicamente a quienes deban ver los ingresos y modificar el ne
 9. Configura Yape y QR desde Configuración.
 10. Para configurar pagos diarios/semanales y habilitar el registro de liquidaciones, ejecuta actualizar_liquidaciones.sql en el SQL Editor de Supabase.
 11. Sube todos los archivos a GitHub Pages, Netlify o Vercel.
+12. En Inicio, la sección Caja de hoy muestra el total del día por método de pago (Yape, Efectivo, Plin y Tarjeta) y el efectivo que debe haber en caja. En Historial se muestra el mismo resumen para la fecha y filtros aplicados. Se actualiza al registrar o deshacer un servicio.
 
 IMPORTANTE
 - Esta app usa únicamente tablas con prefijo barberia_.

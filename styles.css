@@ -11,3 +11,30 @@
 .history-service{display:flex;justify-content:space-between;gap:16px;padding:3px 0}.history-service strong{font-weight:600}
 
 .undo-sale-btn{color:var(--danger);background:#fff1f0;border-color:#fecaca;white-space:nowrap;padding:9px 12px}.undo-sale-btn:hover{background:#fee2e2}.undo-sale-btn:disabled{opacity:.55;cursor:wait}
+
+/* Caja de hoy: conteo de efectivo y Yape (adaptado de la app de perfumería). */
+.cash-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-top:14px}
+.cash-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.cash-panel-head h3{margin:3px 0 0;font:800 16px 'Manrope',sans-serif}
+.cash-panel-head h3 span{color:var(--muted);font:500 11px 'DM Sans',sans-serif}
+.cash-total{background:linear-gradient(135deg,#eaf2fc,#dbeafe);border:1px solid #bfdbfe;border-radius:14px;padding:13px;text-align:center;margin-bottom:11px}
+.cash-total span{display:block;font-size:10px;letter-spacing:1.3px;color:var(--accent-dark);font-weight:800}
+.cash-total strong{display:block;margin-top:3px;font:800 28px 'Manrope',sans-serif;color:#123b70;line-height:1.1}
+.cash-methods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.cash-method{border:1px solid var(--line);border-radius:12px;padding:10px 7px;text-align:center;background:var(--soft)}
+.cash-method span{display:block;font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}
+.cash-method strong{display:block;margin-top:4px;font:800 15px 'Manrope',sans-serif;color:var(--ink);white-space:nowrap}
+.cash-method.yape{border-color:#c4b5fd;background:#f5f1ff}.cash-method.yape span{color:#7c3aed}
+.cash-method.efectivo{border-color:#a7e3c0;background:#edfaf2}.cash-method.efectivo span{color:var(--ok)}
+.cash-method.plin{border-color:#fcd9a8;background:#fff8ec}.cash-method.plin span{color:#b45309}
+.cash-method.tarjeta{border-color:#bfdbfe;background:#eff6ff}.cash-method.tarjeta span{color:#1d4ed8}
+.cash-drawer{margin:11px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.cash-drawer strong{color:var(--ok)}
+.cash-updated{margin:5px 0 0;font-size:10px;color:var(--muted)}
+.cash-summary{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
+.cash-chip{display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:11px;color:var(--muted)}
+.cash-chip b{color:var(--ink);font-size:12px}
+.cash-chip.total{background:#123b70;border-color:#123b70;color:#dbeafe}
+.cash-chip.total b{color:#fff}
+@media(max-width:1000px){.cash-methods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.cash-panel{padding:15px;border-radius:16px}.cash-panel-head h3{font-size:15px}.cash-total strong{font-size:24px}.cash-method strong{font-size:14px}.cash-chip{flex:1 1 auto;justify-content:center}}
